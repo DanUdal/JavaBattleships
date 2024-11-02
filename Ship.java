@@ -5,10 +5,12 @@ public class Ship extends Space {
     int health;
     int posx;
     int posy;
+    String name;
     Random rand = new Random();
 
-    Ship(int hp) {
+    Ship(int hp, String nameString) {
         health = hp;
+        name = nameString;
         boolean valid = false;
         do {
             posx = rand.nextInt(10);
@@ -22,7 +24,7 @@ public class Ship extends Space {
                     }
                     if (valid) {
                         for (int i = 0; i < health; i++) {
-                            Main.map[posx - i][posy] = this;
+                            Game.map[posx - i][posy] = this;
                         }
                     }
                     break;
@@ -33,7 +35,7 @@ public class Ship extends Space {
                     }
                     if (valid) {
                         for (int i = 0; i < health; i++) {
-                            Main.map[posx][posy - i] = this;
+                            Game.map[posx][posy - i] = this;
                         }
                     }
                     break;
@@ -44,7 +46,7 @@ public class Ship extends Space {
                     }
                     if (valid) {
                         for (int i = 0; i < health; i++) {
-                            Main.map[posx + i][posy] = this;
+                            Game.map[posx + i][posy] = this;
                         }
                     }
                     break;
@@ -55,7 +57,7 @@ public class Ship extends Space {
                     }
                     if (valid) {
                         for (int i = 0; i < health; i++) {
-                            Main.map[posx][posy + i] = this;
+                            Game.map[posx][posy + i] = this;
                         }
                     }
                     break;
@@ -67,7 +69,7 @@ public class Ship extends Space {
 
     private boolean checkPosLeft() {
         for (int i = 0; i < health; i++) {
-            if (Main.map[posx - i][posy] instanceof Ship) {
+            if (Game.map[posx - i][posy] instanceof Ship) {
                 return false;
             } 
         }
@@ -76,7 +78,7 @@ public class Ship extends Space {
 
     private boolean checkPosRight() {
         for (int i = 0; i < health; i++) {
-            if (Main.map[posx + i][posy] instanceof Ship) {
+            if (Game.map[posx + i][posy] instanceof Ship) {
                 return false;
             } 
         }
@@ -85,7 +87,7 @@ public class Ship extends Space {
 
     private boolean checkPosUp() {
         for (int i = 0; i < health; i++) {
-            if (Main.map[posx][posy - i] instanceof Ship) {
+            if (Game.map[posx][posy - i] instanceof Ship) {
                 return false;
             } 
         }
@@ -94,7 +96,7 @@ public class Ship extends Space {
 
     private boolean checkPosDown() {
         for (int i = 0; i < health; i++) {
-            if (Main.map[posx][posy + i] instanceof Ship) {
+            if (Game.map[posx][posy + i] instanceof Ship) {
                 return false;
             } 
         }
@@ -105,11 +107,12 @@ public class Ship extends Space {
     public void shoot(int x, int y) {
         health -= 1;
         System.out.println("Hit");
-        Main.map[x][y] = new HitSpace();
-        Main.displayMap[x][y] = 'H';
+        Game.map[x][y] = new HitSpace();
+        Game.displayMap[x][y] = 'H';
+        Game.shots += 1;
         if (health == 0) {
-            System.out.println("Sunk");
-            Main.shipsLeft -= 1;
+            System.out.println(name + " Sunk");
+            Game.shipsLeft -= 1;
         }
     }
 }
